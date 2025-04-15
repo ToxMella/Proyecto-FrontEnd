@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.145.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <title>Informacion sobre los Enemigos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@400&display=swap" rel="stylesheet">
+    
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
+
+    <script src="../assets/js/color-modes.js"></script>
+    <script src="../sidebar-planet.js"></script>
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="apple-touch-icon" href="../assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="../assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="../assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="../assets/img/favicons/manifest.json">
+<link rel="mask-icon" href="../assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
+<link rel="icon" href="../assets/img/favicons/favicon.ico">
+<meta name="theme-color" content="#712cf9">
+
+<style> /*Estilo Propio barra */
+
+  :root {
+      --menu-width: 250px;
+      --collapsed-width: 70px;
+  }
+
+  /* Barra Lateral */
+  aside {
+      position: fixed;
+      height: 100vh;
+      width: var(--menu-width);
+      background: linear-gradient(0deg, #620101, #620101);
+      color: rgb(255, 255, 255);
+      transition: width 0.3s ease;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.45);
+      z-index: 100;
+      padding: 15px 10px;
+      box-sizing: border-box;
+  }
+
+  /* Botón de plegado */
+  .menu-btn {
+      position: absolute;
+      right: 0;
+      top: 20px;
+      transform: translateX(100%);
+      background: #620101;
+      color: white;
+      border: none;
+      border-radius: 0 50% 50% 0;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      box-shadow: 2px 0 5px #620101;
+  }
+
+  /* Logo y nombre */
+  .logo-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      color: rgb(255, 255, 255);
+      text-decoration: none;
+      overflow: hidden;
+  }
+
+  .fa-uikit {
+      font-size: 25px;
+  }
+
+  .brand-name {
+      font-size: 18px;
+      white-space: nowrap;
+      transition: opacity 0.3s;
+  }
+
+  /* Separador */
+  .separator {
+      height: 1px;
+      background: rgba(171, 171, 171, 0.21);
+      margin: 10px 0;
+  }
+
+  /* Items del menú */
+  .menu-items {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0 0 0;
+  }
+
+  .menu-items li {
+      position: relative;
+      margin-bottom: 5px;
+  }
+
+  .menu-items a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.2s;
+  }
+
+  .menu-items a:hover {
+      background: rgba(0, 0, 0, 0.2);
+  }
+
+  .icon {
+      font-size: 18px;
+      min-width: 20px;
+      text-align: center;
+  }
+
+  .item-name {
+      white-space: nowrap;
+      transition: opacity 0.3s;
+  }
+
+  /* Tooltips */
+  .tooltip {
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translate(15px, -50%);
+      background: #161616;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 1000;
+  }
+
+  .tooltip::before {
+      content: "";
+      position: absolute;
+      left: -5px;
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      background: #161616;
+      transform: translateY(-50%) rotate(45deg);
+  }
+
+
+  /* Estado colapsado */
+  body.collapsed aside {
+      width: var(--collapsed-width);
+  }
+
+  body.collapsed .brand-name,
+  body.collapsed .item-name {
+      opacity: 0;
+      width: 0;
+      display: inline-block;
+      overflow: hidden;
+  }
+
+  body.collapsed .menu-btn {
+      transform: translateX(100%) rotate(180deg);
+  }
+
+  body.collapsed .tooltip {
+      opacity: 1;
+      visibility: visible;
+  }
+
+  body.collapsed main {
+      margin-left: var(--collapsed-width);
+  }
+
+  .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+
+      .bd-mode-toggle .bi {
+        width: 1em;
+        height: 1em;
+      }
+
+      .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+      }
+</style>
+<aside>
+  <button class="menu-btn fa fa-chevron-left"></button>
+  <div class="separator"></div>
+  <a href="/FrontEnd/Proyecto/HLL.html" class="logo-wrapper">
+      <span class="fa-solid fa-earth-americas"></span>
+      <span class="brand-name">SuperTierra</span>
+  </a>
+  <div class="separator"></div>
+  <ul class="menu-items">
+      <li>
+          <a href="/FrontEnd/Proyecto/HLL.html" class="logo-wrapper">
+              <span class="fa-solid fa-earth-americas"></span>
+              <span class="item-name">SuperEarth</span>
+          </a>
+      </li>
+      <li>
+          <a href="../Malevelon Creek/index.html" class="logo-wrapper">
+              <span class="icon fa fa-globe"></span>
+              <span class="item-name">MalevelonCreek</span>
+          </a>
+      </li>
+      <li>
+          <a href="../Menkent/pricing/index.html" class="logo-wrapper">
+              <span class="icon fa fa-globe"></span>
+              <span class="item-name">Menkent</span>
+          </a>
+      </li>
+      <li>
+          <a href="../VW/pricing/index.html" class="logo-wrapper">
+              <span class="icon fa fa-globe"></span>
+              <span class="item-name">Vernern Wells</span>
+          </a>
+      </li>
+      <li>
+          <a href="../Lesath/index.html" class="logo-wrapper">
+              <span class="icon fa fa-globe"></span>
+              <span class="item-name">Lesath</span>
+          </a>
+      </li>
+      <li>
+          <a href="../Martale/pricing/index.html" class="logo-wrapper">
+              <span class="icon fa fa-globe"></span>
+              <span class="item-name">Martale</span>
+          </a>
+      </li>
+      <li>
+          <a href="../Meridia/pricing/index.html">
+              <span class="icon fa fa-globe"></span>
+              <span class="item-name">Meridia</span>
+          </a>
+      </li>
+  </ul>
+  <div class="separator"></div>
+  <a href="" class="logo-wrapper">
+      <span class="fa-solid fa fa-exclamation-triangle"></span>
+      <span class="brand-name">Enemigos</span>
+  </a>
+  <div class="separator"></div>
+  <ul class="menu-items">
+      <li>
+          <a href="/FrontEnd/Proyecto/enemigos/Automatas/automatas.html">
+              <span class="icon fa fa-microchip"></span>
+              <span class="brand-name">Automatas</span>
+          </a>
+      </li>
+      <li>
+          <a href="/FrontEnd/Proyecto/enemigos/Terminidos/automatas.html">
+              <span class="icon fa fa-bug"></span>
+              <span class="brand-name">Terminidos</span>
+          </a>
+      </li>
+      <li>
+          <a href="/FrontEnd/Proyecto/enemigos/Iluminados/automatas.html">
+              <span class="icon fa fa-eye"></span>
+              <span class="brand-name">Iluminados</span>
+          </a>
+      </li>
+  </ul>
+</aside>
+  </ul>
+</aside>
+
+    <!-- Custom styles for this template -->
+    <link href="pricing.css" rel="stylesheet">
+  </head>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="check2" viewBox="0 0 16 16">
+    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+  </symbol>
+  <symbol id="circle-half" viewBox="0 0 16 16">
+    <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+  </symbol>
+  <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+    <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+    <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+  </symbol>
+  <symbol id="sun-fill" viewBox="0 0 16 16">
+    <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+  </symbol>
+</svg>
+
+
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+      <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
+        id="bd-theme"
+        type="button"
+        aria-expanded="false"
+        data-bs-toggle="dropdown"
+        
+        aria-label="Toggle theme (auto)">
+  <svg class="bi my-1 theme-icon-active" aria-hidden="true"><use href="#circle-half"></use></svg>
+  <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+</button>
+<ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+      <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#sun-fill"></use></svg>
+      Light
+      <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+      <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#moon-stars-fill"></use></svg>
+      Dark
+      <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
+    </button>
+  </li>
+  <li>
+    <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+      <svg class="bi me-2 opacity-50" aria-hidden="true"><use href="#circle-half"></use></svg>
+      Auto
+      <svg class="bi ms-auto d-none" aria-hidden="true"><use href="#check2"></use></svg>
+    </button>
+  </li>
+</ul>
+
+    </div>
+
+    
+<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="check" viewBox="0 0 16 16">
+    <title>Check</title>
+    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+  </symbol>
+</svg>
+
+<div class="container py-3">
+  <header>
+    <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center link-body-emphasis text-decoration-none">
+        
+        <span class="fs-4">¡Ayuda a nuestros HellDivers!</span>
+      </a>
+
+      <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#">Estratagemas</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#">Suministros</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="#">Municiòn</a>
+        <a class="py-2 link-body-emphasis text-decoration-none" href="#">Gasolina</a>
+      </nav>
+    </div>
+
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+      <h1 class="display-4 fw-normal text-body-emphasis">¡Ayuda a implantar Democracia!</h1>
+      <p class="fs-5 text-body-secondary">Con estas Donaciones ayudaremos a nuestros HellDivers que se encuentran combatiendo en diferentes planetas impartiendo la Justicia, Libertad, y la Verdadera Democracia gestionada. Se un HellDiver.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">¡Donaciòn Basica!</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$500<small class="text-body-secondary fw-light">/Sc</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>10.000 Balas</li>
+              <li>300 Suministros</li>
+              <li>60 Misiles de racimo</li>
+            </ul>
+            <button type="button" class="w-100 btn btn-lg btn-outline-primary">Dona de manera gratis</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">¡Donaciòn de Super Ciudadano!</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$1500<small class="text-body-secondary fw-light">/Sc</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>50.000 Balas</li>
+              <li>800 Suministros</li>
+              <li>65 Misiles 500kg</li>
+              <li>100 Misiles de racimo</li>
+              <li>30 Napalms</li>
+              <li>20.000 Balas incendiarias</li>
+            </ul>
+            <button type="button" class="w-100 btn btn-lg btn-primary">Donar de manera gratis</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm border-primary">
+          <div class="card-header py-3 text-bg-primary border-primary">
+            <h4 class="my-0 fw-normal">¡Donacion de Helldiver!</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$3000<small class="text-body-secondary fw-light">/Sc</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>100.000 Balas</li>
+              <li>75.000 Balas Incendiarias</li>
+              <li>50.000 Balas Explosivas</li>
+              <li>200 Misiles 500kg</li>
+              <li>400 Misiles 250kg</li>
+              <li>100 Napalm</li>
+              <li>300 Misiles de racimo</li>
+            </ul>
+            <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="display-6 text-center mb-4">¡Compara Donaciones!</h2>
+
+    <div class="table-responsive">
+      <table class="table text-center">
+        <thead>
+          <tr>
+            <th style="width: 34%;"></th>
+            <th style="width: 22%;">Basica</th>
+            <th style="width: 22%;">Super Ciudadano</th>
+            <th style="width: 22%;">HellDiver</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" class="text-start">Municion</th>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+          </tr>
+          <tr>
+            <th scope="row" class="text-start">Misiles 500kg</th>
+            <td></td>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+          </tr>
+        </tbody>
+
+        <tbody>
+          <tr>
+            <th scope="row" class="text-start">Suministros</th>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+          </tr>
+          <tr>
+            <th scope="row" class="text-start">Misiles de Racimo</th>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+          </tr>
+          <tr>
+            <th scope="row" class="text-start">Napalms</th>
+            <td></td>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+          </tr>
+          <tr>
+            <th scope="row" class="text-start">Municion Explosiva</th>
+            <td></td>
+            <td></td>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+          </tr>
+          <tr>
+            <th scope="row" class="text-start">Misiles 250kg</th>
+            <td></td>
+            <td></td>
+            <td><svg class="bi" width="24" height="24" role="img" aria-label="Included"><use xlink:href="#check"/></svg></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+</div>
+<script defer src="../assets/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"></script>
+
+    </body>
+</html>
